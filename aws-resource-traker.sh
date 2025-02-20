@@ -1,35 +1,34 @@
 
 #!/bin/bash
 
-
 ###########################
-# Author:Hema
-# Date:2/20/2025
+# Author: Hema
+# Date: 2/20/2025
+# Version: v1
 #
-# Version:v1
-#
-# This script will report the AWS resource usage
-# ####################
-set -x
-#
-#
-# AWS S3
-# AWs Ec2
-# AWS Lambda
-# AWS IAM users
-#
-# List S3 buckets
-echo"print list of s3 buckets"
+# This script reports AWS resource usage
+###########################
+
+set -x  # Debug mode to show command execution
+
+# AWS Resources to List:
+# - S3 Buckets
+# - EC2 Instances
+# - Lambda Functions
+# - IAM Users
+
+# List S3 Buckets
+echo "Printing list of S3 buckets..."
 aws s3 ls
 
-# List EC2 instance
-echo"print list of ec2 instances"
-aws ec2 describe-instances | jq '.Reservations[].Instances[].InstanceId'
+# List EC2 Instances
+echo "Printing list of EC2 instances..."
+aws ec2 describe-instances --query 'Reservations[*].Instances[*].InstanceId' --output table
 
-# List lambda
-echo"print list of lambada functions"
-aws lambda list-functions
+# List Lambda Functions
+echo "Printing list of Lambda functions..."
+aws lambda list-functions --query 'Functions[*].FunctionName' --output table
 
-#IAM List the user
-echo"print list of iam users"
-aws iam list-users
+# List IAM Users
+echo "Printing list of IAM users..."
+aws iam list-users --query 'Users[*].UserName' --output table
